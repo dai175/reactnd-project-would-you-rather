@@ -11,6 +11,7 @@ import Menu from './Menu';
 import './Menu.css';
 import NotFound from './NotNound';
 import Poll from './Poll';
+import PrivateRoute from './PrivateRoute';
 import SignIn from './SignIn';
 
 function App() {
@@ -29,10 +30,10 @@ function App() {
             {authedUser && <Menu/>}
             <Container sx={{clear: 'both'}}>
               <Switch>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/add" component={AddQuestion}/>
-                <Route exact path="/leaderboard" component={LeaderBoard}/>
-                <Route exact path="/questions/:id" component={Poll}/>
+                <PrivateRoute exact path="/" component={Home} isAuthenticated={authedUser}/>
+                <PrivateRoute exact path="/add" component={AddQuestion} isAuthenticated={authedUser}/>
+                <PrivateRoute exact path="/leaderboard" component={LeaderBoard} isAuthenticated={authedUser}/>
+                <PrivateRoute exact path="/questions/:id" component={Poll} isAuthenticated={authedUser}/>
                 <Route exact path="/signIn" component={SignIn}/>
                 <Route component={NotFound}/>
               </Switch>

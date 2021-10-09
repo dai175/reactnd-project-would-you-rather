@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import { setAuthedUser } from '../actions/authedUser';
 
 function SignIn() {
-  const {authedUser, users} = useSelector((state) => state);
+  const {users} = useSelector((state) => state);
   const [toHome, setToHome] = useState(false);
   const [user, setUser] = useState('');
 
@@ -21,7 +21,6 @@ function SignIn() {
 
   return (
     <Fragment>
-      {!authedUser && <Redirect to="/signIn"/>}
       {toHome && <Redirect to="/"/>}
       <Container
         sx={{

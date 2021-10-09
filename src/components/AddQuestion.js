@@ -24,7 +24,6 @@ function AddQuestion() {
   };
   return (
     <Fragment>
-      {!authedUser && <Redirect to="/signIn"/>}
       {toHome && <Redirect to="/"/>}
       <Container
         sx={{
