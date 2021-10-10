@@ -1,14 +1,15 @@
 import { Button, Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 import { setAuthedUser } from '../actions/authedUser';
 
 function SignIn() {
   const {users} = useSelector((state) => state);
-  const [toHome, setToHome] = useState(false);
   const [user, setUser] = useState('');
+  const [location, setLocation] = useState('');
 
+  const {state} = useLocation();
   const handleChange = (event) => {
     setUser(event.target.value);
   };
@@ -16,12 +17,16 @@ function SignIn() {
   const dispatch = useDispatch();
   const handleSignIn = () => {
     dispatch(setAuthedUser(user));
-    setToHome(true);
+    if (state?.from) {
+      setLocation(state.from);
+    } else {
+      setLocation('/');
+    }
   };
 
   return (
     <Fragment>
-      {toHome && <Redirect to="/"/>}
+      {location !== '' && <Redirect to={location}/>}
       <Container
         sx={{
           my: 1,

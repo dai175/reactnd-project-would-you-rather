@@ -3,6 +3,7 @@ import { Fragment, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { ANSWERED, UNANSWERED } from '../actions/category';
 import { handleQuestionAnswer } from '../actions/questions';
+import NotFound from './NotNound';
 
 const OPTION_ONE = 'optionOne';
 const OPTION_TWO = 'optionTwo';
@@ -10,12 +11,19 @@ const OPTION_TWO = 'optionTwo';
 function Poll(props) {
   const {authedUser, users, user, question} = props;
   const [answer, setAnswer] = useState(OPTION_ONE);
+  const dispatch = useDispatch();
+
+  if (!question) {
+    return (
+      <NotFound/>
+    )
+  }
+
   const category = Object.keys(users[authedUser].answers).includes(question.id) ? ANSWERED : UNANSWERED;
   const countOfVotes = question.optionOne.votes.length + question.optionTwo.votes.length;
   const ratioOfOptionOne = Math.floor(question.optionOne.votes.length / countOfVotes * 100);
   const ratioOfOptionTwo = 100 - ratioOfOptionOne;
 
-  const dispatch = useDispatch();
   const handleSubmit = () => {
     dispatch(handleQuestionAnswer(authedUser, question.id, answer));
   };
@@ -75,7 +83,7 @@ function Poll(props) {
 function mapStateToProps({authedUser, users, questions}, props) {
   const {id} = props.match.params;
   const question = questions[id];
-  const user = users[question.author];
+  const user = question ? users[question.author] : null;
   return {
     authedUser,
     users,
